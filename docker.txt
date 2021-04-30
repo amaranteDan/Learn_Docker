@@ -1,0 +1,148 @@
+##########################################
+Iniciando com docker.
+
+Back-end baseado em LXC (LinuX Containers)
+
+Não faz uso de emulação ou suporte a hardware, apenas proporciona a execução de varios sistemas operacionais de forma isolada. Ele utiliza o mesmo Kernel do servidor host,
+o que torna tudo mais rapido.
+Alternativa para virtualização completa se comparada aos hipervisores KVM, Xen e VMware ESXI.
+
+Esquema de container
+
+ APP  APP  DB DB    | -> DOCKER
+  A    B   A1 A2 ---|
+      Host OS
+      Server 
+
+O Linux Kernel possui um recuroso chamado Cgroups (control groups) que é usado para limitar e isolar o uso da CPU, memória, disco e rede etc.
+
+Usando os NAMESPACES, responsaveis por isolar grupos de processos, de modo que eles não enxergem os processos de outros grupos, em containers ou no sistema host.
+
+Namespaces cria uma camad de isolamento para grupos de procesos. No Docker são:
+
+*pid
+*net -interfaces de rede
+*ipc controle dos recursos IPC (interProcess Communication);
+*mnt - gestão de pontos de montagem
+*uts - UTS (Unix Timesharing System) isolar recursos do kernel.
+
+*Union file systems (UnionFS) são sistemas de arquivos qe funcionam por meio de criação de camdas. São leves e muito rápidos.
+
+
+***Instalação do Docker. Veja a documentação no link: https://docs.docker.com/engine/install/debian/
+
+
+Fazendo o pull de uma imagem especifica.
+
+#docker pull ubuntu.
+
+Ver imagens instaladas
+
+#docker images
+
+Pesquisando imagens
+#docker search ubuntu
+
+***Rodando uma imagem
+# docker run -i -t ubuntu /bin/bash
+
+#docker run -i -t debian bash - Vai iniciar o container debian com o bash
+
+-i interatividade
+-t linkar ao terminal
+
+cat /proc/version
+cat /etc/lsb-release
+
+
+*** Verificando os containers que ja rodaram
+
+#docker container list -a 
+
+#docker ps -a
+
+# docker ps -q - Mostra id de todos os containers
+*** Saindo de um container
+
+#exit
+
+*** Voltando para um container 
+#docker container start -ai <id_container>
+
+
+*** Removendo um container
+
+#docker container rm <id_ou_4_iniciais>
+
+#docker rmi docker - Remove as imagens do docker
+
+# docker rmi $(docker images -q) Deletando as imagens
+
+#docker container prune - Remove todos os containers
+
+*** Iniciando um container e nomeando
+
+#docker container run -it --name nmap --rm debian bash - Ja estou subindo um container nomeando (--name) nmap (--rm) para ser destruida apos o (exit).
+
+# docker start <id_container>
+
+# docker stop <id_ou_container>
+
+# docker stop $(docker ps -q) vai parar todos os containers ao mesmo tempo  ou docker star - Inicia todos
+
+*** Verificando o ip
+
+ifconfig eth0 | grep 'inet addr:'
+
+
+# docker stats <id>
+
+
+*** Toda alteração é volatil dentro do container
+
+Para comitar as alterações
+
+# docker commit <id> ubuntu/nginx
+
+# docker images
+
+-d envia toda execução para background
+
+# docker run -d -p 8080:80 ubuntu/nginx /usr/sbin/nginx -g
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
